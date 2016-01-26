@@ -1,0 +1,64 @@
+Exodus,Genesis EXODUS Leviticus
+Leviticus,Exodus LEVITICUS Numbers
+Numbers,Leviticus NUMBERS Deuteronomy
+Deuteronomy,Numbers DEUTERONOMY Joshua
+Joshua,Deuteronomy JOSHUA Judges
+Judges,Joshua JUDGES Ruth
+Ruth,Judges RUTH 1 Samuel
+1 Samuel,Ruth 1 SAMUEL 2 Samuel
+2 Samuel,1 Samuel 2 SAMUEL 1 Kings
+1 Kings,2 Samuel 1 KINGS 2 Kings
+2 Kings,1 Kings 2 KINGS 1 Chronicles
+1 Chronicles,2 Kings 1 CHRONICLES 2 Chronicles
+2 Chronicles,1 Chronicles 2 CHRONICLES Ezra
+Ezra,2 Chronicles EZRA Nehemiah
+Nehemiah,Ezra NEHEMIAH Esther
+Esther,Nehemiah ESTHER Job
+Job,Esther JOB Psalms
+Psalms,Job PSALMS Proverbs
+Proverbs,Psalms PROVERBS Ecclesiastes
+Ecclesiastes,Proverbs ECCLESIASTES Song of Songs
+Song of Songs,Ecclesiastes SONG OF SONGS Isaiah
+Isaiah,Song of Songs ISAIAH Jeremiah
+Jeremiah,Isaiah JEREMIAH Lamentations
+Lamentations,Jeremiah LAMENTATIONS Ezekiel
+Ezekiel,Lamentations EZEKIEL Daniel
+Daniel,Ezekiel DANIEL Hosea
+Hosea,Daniel HOSEA Joel
+Joel,Hosea JOEL Amos
+Amos,Joel AMOS Obadiah
+Obadiah,Amos OBADIAH Jonah
+Jonah,Obadiah JONAH Micah
+Micah,Jonah MICAH Nahum
+Nahum,Micah NAHUM Habakkuk
+Habakkuk,Nahum HABAKKUK Zephaniah
+Zephaniah,Habakkuk ZEPHANIAH Haggai
+Haggai,Zephaniah HAGGAI Zechariah
+Zechariah,Haggai ZECHARIAH Malachi
+Malachi,Zechariah MALACHI Matthew
+Matthew,Malachi MATTHEW Mark
+Mark,Matthew MARK Luke
+Luke,Mark LUKE John
+John,Luke JOHN Acts (of the Apostles)
+Acts (of the Apostles),John ACTS (OF THE APOSTLES) Romans
+Romans,Acts (of the Apostles) ROMANS 1 Corinthians
+1 Corinthians,Romans 1 CORINTHIANS 2 Corinthians
+2 Corinthians,1 Corinthians 2 CORINTHIANS Galatians
+Galatians,2 Corinthians GALATIANS Ephesians
+Ephesians,Galatians EPHESIANS Philippians
+Philippians,Ephesians PHILIPPIANS Colossians
+Colossians,Philippians COLOSSIANS 1 Thessalonians
+1 Thessalonians,Colossians 1 THESSALONIANS 2 Thessalonians
+2 Thessalonians,1 Thessalonians 2 THESSALONIANS 1 Timothy
+1 Timothy,2 Thessalonians 1 TIMOTHY 2 Timothy
+2 Timothy,1 Timothy 2 TIMOTHY Titus
+Titus,2 Timothy TITUS Philemon
+Philemon,Titus PHILEMON Hebrews
+Hebrews,Philemon HEBREWS James
+James,Hebrews JAMES 1 Peter
+1 Peter,James 1 PETER 2 Peter
+2 Peter,1 Peter 2 PETER 1 John
+1 John,2 Peter 1 JOHN 2 John
+2 John,1 John 2 JOHN 3 John
+3 John,2 John 3 JOHN Jude
+Jude,3 John JUDE Revelation
