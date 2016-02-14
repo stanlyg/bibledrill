@@ -1,0 +1,42 @@
+body {
+  width: 7in;
+  margin-left: auto;
+  margin-right: auto;
+}
+.caller {
+  color: blue;
+  text-align: center;
+  font-style: italic;
+  font-family: serif;
+}
+.answer {
+  background: #ccc;
+  text-align: center;
+  font-family: sans-serif;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+table {
+  width: 100%;
+}
+td {
+  border-bottom: 1px solid black;
+}
+td.noborder {
+  border-bottom: none;
+}
+td.caller { 
+  width: 30%;
+}
+td.answer {
+  width: 70%;
+}
+.page {
+  page-break-before: always;
+}
+h1 { 
+  text-align: center;
+}
+
