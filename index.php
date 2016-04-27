@@ -11,6 +11,23 @@
 
 <table>
   <tr>
+    <td>Cycle</td>
+    <td>
+      <input type="radio" name="cycle" id="rcycle" value="red">   <label for="rcycle">Red</label>
+      <input type="radio" name="cycle" id="gcycle" value="green" checked="checked"> <label for="gcycle">Green</label>
+      <input type="radio" name="cycle" id="bcycle" value="blue">  <label for="bcycle">Blue</label>
+    </td>
+  </tr>
+  <tr>
+    <td>Translation</td>
+    <td>
+      <input type="radio" name="trans" id="kjv" value="kjv"> <label for="kjv">King James Version</label> <br />
+      <input type="radio" name="trans" id="niv" value="niv" checked="checked"> <label for="niv">New International Version (2011)</label><br />
+      <input type="radio" name="trans" id="hcs" value="hcs"> <label for="hcs">Holman Christian Standard</label><br />
+      <input type="radio" name="trans" id="esv" value="esv"> <label for="esv">English Standard Version</label>
+    </td>
+  </tr>
+  <tr>
     <td>Quotation Drill</td>
     <td>
 <!--
@@ -52,7 +69,7 @@
   </tr>
 </table>
 
-<input type='submit'>
+<input type='submit' name="generate" value="generate" />
 </form>
 
 </body>
