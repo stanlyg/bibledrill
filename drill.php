@@ -127,15 +127,17 @@ $rawpassages = array_map('str_getcsv', file($cycle . '/' . $trans . '/' . 'passa
 $passages = array();
 
 foreach ($rawpassages as $p) {
-  $passages[$p[0]] = $p[1];
+  $passages[$p[0]] = array($p[1],$p[2]);
 }
 shuffle($keys);
 
+#print_r ($passages);
+
 for ($i = 0; $i < $_POST['kcount']; $i++) {
   $v = $keys[$i];
-  $r = rand($v[3],$v[4]);
+  $r = rand(1,$v[3]);
   $aref = $v[2] . $r;
-  $averse = $passages[$aref];
+  $selectedverse = $passages[$aref];
 ?>
   <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
   Present Bible <br />
@@ -147,9 +149,9 @@ for ($i = 0; $i < $_POST['kcount']; $i++) {
   <?php echo $v[1]; ?></p>
 
   <p class='caller'>Number: __________ <br />
-  Please read <?php echo $aref; ?></p>
-  <p class='answer'><?php echo $aref; ?><br />
-  <?php echo $averse; ?></p>
+  Please read <?php echo $selectedverse[0]; ?></p>
+  <p class='answer'><?php echo $selectedverse[0]; ?><br />
+  <?php echo $selectedverse[1]; ?></p>
 <?php
   $current++;
 }
