@@ -5,7 +5,7 @@
 <link rel='stylesheet' type='text/css' href='drill.css' />
 </head>
 <body>
-<h1>Bible Drill</h1>
+<h1>Childrens Bible Drill</h1>
 
 <?php
 if ( !isset($_POST['generate']) ) {
@@ -20,10 +20,14 @@ if ( !isset($_POST['generate']) ) {
   $trans = $_POST['trans'];
 
 ?>
+<p>
+This Children's Bible Drill is for the <?php echo strtoupper($cycle); ?> cycle and the 
+<?php echo strtoupper($trans); ?> translation.</p>
 
 <p class="caller">
 We have four different types of Drills: QUOTATION DRILL, COMPLETION DRILL
 BOOK DRILL and KEY PASSAGE DRILL.</p>
+
 <p class="caller">
 Our first drill is the QUOTATION DRILL and there will be <?php echo $_POST['qcount']; ?> 
 calls.  I will give the reference. If the participant knows the verse, he steps forward 
