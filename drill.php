@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<meta name="viewport" content="width=device-width">
+
 <title>Children's Bible Drill</title>
 <link rel='stylesheet' type='text/css' href='drill.css' />
 </head>
@@ -16,13 +18,20 @@ if ( !isset($_POST['generate']) ) {
 <?php
 } else {
 
+  if ( !isset($_POST['drillid']) ) {
+    $drillid = time();
+  } else {
+    $drillid = $_POST['drillid'];
+  }
+  srand($drillid);
+
   $cycle = $_POST['cycle'];
   $trans = $_POST['trans'];
 
 ?>
 <p>
 This Children's Bible Drill is for the <?php echo strtoupper($cycle); ?> cycle and the 
-<?php echo strtoupper($trans); ?> translation.</p>
+<?php echo strtoupper($trans); ?> translation. This drill has an ID number of <?php echo $drillid; ?>.</p>
 
 <p class="caller">
 We have four different types of Drills: QUOTATION DRILL, COMPLETION DRILL
