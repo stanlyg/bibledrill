@@ -24,6 +24,10 @@ if ( !isset($_POST['generate']) ) {
     $drillid = $_POST['drillid'];
   }
   srand($drillid);
+  
+  // Put files in place for scorecard
+  $scoredata = fopen("cache/".$drillid,"w");
+  fwrite($scoredata,$_POST['qcount'].";".$_POST['ccount'].";".$_POST['bcount'].";".$_POST['kcount']."\n");
 
   $cycle = $_POST['cycle'];
   $trans = $_POST['trans'];
@@ -31,7 +35,9 @@ if ( !isset($_POST['generate']) ) {
 ?>
 <p>
 This Children's Bible Drill is for the <?php echo strtoupper($cycle); ?> cycle and the 
-<?php echo strtoupper($trans); ?> translation. This drill has an ID number of <?php echo $drillid; ?>.</p>
+<?php echo strtoupper($trans); ?> translation. This drill has an ID number of <?php echo $drillid; ?>.
+Custom scorecard should be available at <a href='score.php?drillid=<?php echo $drillid ?>'>this link</a>.
+</p>
 
 <p class="caller">
 We have four different types of Drills: QUOTATION DRILL, COMPLETION DRILL
@@ -45,14 +51,14 @@ verse and give the reference.
 </p>
 
 <?php
-$current = 1;
+  $current = 1;
 
-$verses = array_map('str_getcsv', file($cycle . '/' . $trans . '/' . 'verses.csv'));
+  $verses = array_map('str_getcsv', file($cycle . '/' . $trans . '/' . 'verses.csv'));
 
-shuffle($verses);
+  shuffle($verses);
 
-for ($i = 0; $i < $_POST['qcount']; $i++) {
-  $v = $verses[$i];
+  for ($i = 0; $i < $_POST['qcount']; $i++) {
+    $v = $verses[$i];
 ?>
   <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
   Please recite: <br />
@@ -63,9 +69,10 @@ for ($i = 0; $i < $_POST['qcount']; $i++) {
   <p class='answer'><?php echo $v[2]; ?><br />
   <?php echo $v[0]; ?></p>
 
-  <?php
-  $current++;
-}
+<?php
+    fwrite($scoredata,$v[0]."\n");
+    $current++;
+  }
 ?>
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></p>
@@ -76,8 +83,8 @@ the participant can complete the verse, he steps forward on the command
 &ldquo;Start&rdquo;, prepared to quote the entire verse and give the reference.<p>
 
 <?php
-for ($i = $_POST['qcount']; $i < ($_POST['qcount'] + $_POST['ccount']); $i++) {
-  $v = $verses[$i];
+  for ($i = $_POST['qcount']; $i < ($_POST['qcount'] + $_POST['ccount']); $i++) {
+    $v = $verses[$i];
 ?>
   <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
   Please complete: <br />
@@ -89,8 +96,9 @@ for ($i = $_POST['qcount']; $i < ($_POST['qcount'] + $_POST['ccount']); $i++) {
   <?php echo $v[2]; ?><br />
   <?php echo $v[0]; ?></p>
 <?php
-  $current++;
-}
+    fwrite($scoredata,$v[0]."\n");
+    $current++;
+  }
 ?>
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></td>
@@ -103,12 +111,12 @@ book called, and the book following the one called.</p>
 
 <table>
 <?php
-$books = array_map('str_getcsv', file('books.csv'));
+  $books = array_map('str_getcsv', file('books.csv'));
 
-shuffle($books);
+  shuffle($books);
 
-for ($i = 0; $i < $_POST['bcount']; $i++) {
-  $v = $books[$i];
+  for ($i = 0; $i < $_POST['bcount']; $i++) {
+    $v = $books[$i];
 ?>
   <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
   Present Bible <br />
@@ -117,9 +125,10 @@ for ($i = 0; $i < $_POST['bcount']; $i++) {
 
   <p class='caller'><br />Number: __________</p>
   <p class='answer'><?php echo $v[1]; ?></p>
-  <?php
-  $current++;
-}
+<?php
+    fwrite($scoredata,$v[0]."\n");
+    $current++;
+  }
 ?>
 
 <p class='caller'><b>ATTENTION</b><br />
@@ -135,22 +144,22 @@ Key Passage and reference. After stating the Key Passage and reference, I will a
 same participant to read aloud one or more verses.</p>
 
 <?php
-$keys = array_map('str_getcsv', file($cycle . '/' . 'keys.csv'));
-$rawpassages = array_map('str_getcsv', file($cycle . '/' . $trans . '/' . 'passages.csv'));
-$passages = array();
+  $keys = array_map('str_getcsv', file($cycle . '/' . 'keys.csv'));
+  $rawpassages = array_map('str_getcsv', file($cycle . '/' . $trans . '/' . 'passages.csv'));
+  $passages = array();
 
-foreach ($rawpassages as $p) {
-  $passages[$p[0]] = array($p[1],$p[2]);
-}
-shuffle($keys);
+  foreach ($rawpassages as $p) {
+    $passages[$p[0]] = array($p[1],$p[2]);
+  }
+  shuffle($keys);
 
-#print_r ($passages);
+  #print_r ($passages);
 
-for ($i = 0; $i < $_POST['kcount']; $i++) {
-  $v = $keys[$i];
-  $r = rand(1,$v[3]);
-  $aref = $v[2] . $r;
-  $selectedverse = $passages[$aref];
+  for ($i = 0; $i < $_POST['kcount']; $i++) {
+    $v = $keys[$i];
+    $r = rand(1,$v[3]);
+    $aref = $v[2] . $r;
+    $selectedverse = $passages[$aref];
 ?>
   <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
   Present Bible <br />
@@ -166,13 +175,15 @@ for ($i = 0; $i < $_POST['kcount']; $i++) {
   <p class='answer'><?php echo $selectedverse[0]; ?><br />
   <?php echo $selectedverse[1]; ?></p>
 <?php
-  $current++;
-}
+    fwrite($scoredata,$v[0]."\n");
+    $current++;
+  }
 ?>
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></p>
 <p>Thank you for your participation.</p>
 <?php
+  fclose($scoredata);
 }
 ?>
 </body>
