@@ -1,8 +1,28 @@
 <?php
-require('fpdf.php');
+require_once('fpdf.php');
+require_once('pdfrotate.php');
 
-class PDF extends FPDF
+class PDF extends PDF_Rotate
 {
+function RotatedText($x,$y,$txt,$angle)
+{
+    //Text rotated around its origin
+    $this->Rotate($angle,$x,$y);
+    $this->Text($x,$y,$txt);
+    $this->Rotate(0);
+}
+function NinetyCenterPoint($x, $y, $w, $h, $txt, $rect=1, $wpad=0)
+{
+    // Text rotated 90 degrees around centered in a box
+    $tl = $this->GetStringWidth($txt);
+    $newx = $x + $w; 
+    $newy = $y + $h / 2 + $tl / 2;
+    $this->RotatedText($newx,$newy,$txt,90);
+
+    if ($rect = 1) {
+        $this->Rect($x, $y, $w+$wpad, $h);
+    }
+}
   // Load data
   function LoadData($file)
   {
@@ -18,28 +38,38 @@ class PDF extends FPDF
   function DrillTable($counts,$data)
   {
     // Top Header
-    $this->Cell(1.0,0.2,"",1,0,"C");
-    $this->Cell(2.3,0.2,"Call",1,0,"C");
+    $this->Cell(0.35,0.2,"",1,0,"C");
+    $this->Cell(2.95,0.2,"Call",1,0,"C");
     for ($i = 1; $i <= 12; $i++) {
       $this->Cell(0.35,0.2,$i,1,0,"C");
     }
     $this->Ln();
 
     // Left Header
+    $savey = $this->GetY();
     $y = $this->GetY();
+    $x = $this->GetX();
 
-    $this->Cell(1.0,0.25*$counts[0],"Quotation",1,1,"C");
-    $this->Cell(1.0,0.25*$counts[1],"Completion",1,1,"C");
-    $this->Cell(1.0,0.25*$counts[2],"Book",1,1,"C");
-    $this->Cell(1.0,0.25*$counts[3],"Key Passage",1,1,"C");
+    $h = 0.25*$counts[0];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Quotation Drill",1,0.1);
+    $y = $y + $h;
+    $h = 0.25*$counts[1];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Completion Drill",1,0.1);
+    $y = $y + $h;
+    $h = 0.25*$counts[2];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Book Drill",1,0.1);
+    $y = $y + $h;
+    $h = 0.25*$counts[3];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Key Passage Drill",1,0.1);
+    $y = $y + $h;
 
-    $this->SetY($y);
-    // Data
+   // Data
+    $this->SetY($savey);
     foreach($data as $key=>$row)
     {
-      $this->SetX(1.5);
+      $this->SetX(0.85);
       foreach($row as $col){
-        $this->Cell(2.3,0.25,$key.". ".$col,1);
+        $this->Cell(2.95,0.25,$key.". ".$col,1);
         for ($i = 1; $i <= 12; $i++) {
           $this->Cell(0.35,0.25,"",1,0,"C");
         }
@@ -87,7 +117,7 @@ $pdf->SetFont('Arial','',24);
 $pdf->Cell(0,1.0,"Children's Bible Drill Score Sheet",0,1,"C");
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(3,0.25,"Judge: _________________________ ",0,0,"L");
-$pdf->Cell(3,0.25,"Drill: _________________________ ",0,0,"L");
+$pdf->Cell(3,0.25,"Drill: ".$drillid,0,0,"L");
 $pdf->Ln();
 $pdf->Ln();
 $pdf->DrillTable($counts,$data);
