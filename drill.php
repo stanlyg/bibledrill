@@ -4,12 +4,23 @@
 <meta name="viewport" content="width=device-width">
 
 <title>Children's Bible Drill</title>
-<link rel='stylesheet' type='text/css' href='drill.css' />
+<link rel='stylesheet' type='text/css' href='drill.css' media='all'/>
 </head>
 <body>
 <h1>Childrens Bible Drill</h1>
 
 <?php
+// Load data
+function LoadData($file)
+{
+  // Read file lines
+  $lines = file($file);
+  $data = array();
+  foreach($lines as $line)
+    $data[] = explode(';',trim($line));
+  return $data;
+}
+
 if ( !isset($_POST['generate']) ) {
 ?>
 <p>There was an error generating the form. 
@@ -19,27 +30,32 @@ if ( !isset($_POST['generate']) ) {
 } else {
 
   if ( !isset($_POST['drillid']) ) {
-    $drillid = time();
+    $seed = time();
   } else {
-    $drillid = $_POST['drillid'];
+    $seed = $_POST['drillid'];
   }
-  srand($drillid);
-  $drillid = $_POST['cycle'][0] . $drillid ;   
-  if ( ($_POST['qcount'] != 6) or ($_POST['ccount'] != 6) or ($_POST['bcount'] != 6) or ($_POST['kcount'] != 6) ) {
-    $drillid .= '-'.$_POST['qcount'].'-'.$_POST['ccount'].'-'.$_POST['bcount'].'-'.$_POST['kcount'];
-  }
-    // Put files in place for scorecard
-  $scoredata = fopen("cache/".$drillid,"w");
-  fwrite($scoredata,$_POST['qcount'].";".$_POST['ccount'].";".$_POST['bcount'].";".$_POST['kcount']."\n");
 
   $cycle = $_POST['cycle'];
   $trans = $_POST['trans'];
+  $qcount = $_POST['qcount'];
+  $ccount = $_POST['ccount'];
+  $bcount = $_POST['bcount'];
+  $kcount = $_POST['kcount'];
+
+  include_once("generate.php");
+  $drillid = generate_data_file($seed, $cycle, $trans, $qcount, $ccount, $bcount, $kcount);
+
+  $drilldata = LoadData('cache/'.$drillid);
+
 
 ?>
-<p>
+<p class="fineprint">
 This Children's Bible Drill is for the <?php echo strtoupper($cycle); ?> cycle and the 
-<?php echo strtoupper($trans); ?> translation. This drill has an ID number of <?php echo $drillid; ?>.
-Custom scorecard should be available at <a href='score.php?drillid=<?php echo $drillid ?>'>this link</a>.
+<?php echo strtoupper($trans); ?> translation. This drill has an ID number of <?php echo $drillid; ?>. 
+</p>
+<p class='noprint'>
+<a href='score.php?drillid=<?php echo $drillid ?>'>Score card</a><br />
+<a href='mini.php?drillid=<?php echo $drillid ?>'>Just the Q & A</a>
 </p>
 
 <p class="caller">
@@ -56,24 +72,26 @@ verse and give the reference.
 <?php
   $current = 1;
 
-  $verses = array_map('str_getcsv', file($cycle . '/' . $trans . '/' . 'verses.csv'));
+  for ($i = 0; $i < $qcount; $i++) {
 
-  shuffle($verses);
+    print <<< TEXT
+      <p class='caller'>
+        $current: <b>ATTENTION</b><br />
+        Please recite: <br />
+        <b><u>{$drilldata[$current][0]}</u></b><br />
+        <b>START</b>
+      </p>
 
-  for ($i = 0; $i < $_POST['qcount']; $i++) {
-    $v = $verses[$i];
-?>
-  <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
-  Please recite: <br />
-  <b><u><?php echo $v[0]; ?></u></b><br />
-  <b>START</b></p>
+      <p class='caller'>
+        Number: __________
+      </p>
+      <p class='answer'>
+        {$drilldata[$current][1]}<br />
+        {$drilldata[$current][0]}
+      </p>
 
-  <p class='caller'>Number: __________</p>
-  <p class='answer'><?php echo $v[2]; ?><br />
-  <?php echo $v[0]; ?></p>
+TEXT;
 
-<?php
-    fwrite($scoredata,$v[0]."\n");
     $current++;
   }
 ?>
@@ -81,65 +99,72 @@ verse and give the reference.
 <b>PLEASE RELAX.</b></p>
 
 <p class='caller page'>Our second drill is the COMPLETION DRILL. There will be a total of 
-<?php echo $_POST['ccount']; ?> calls. I will quote the first part of the Scripture. If 
+<?php echo $ccount; ?> calls. I will quote the first part of the Scripture. If 
 the participant can complete the verse, he steps forward on the command 
 &ldquo;Start&rdquo;, prepared to quote the entire verse and give the reference.<p>
 
 <?php
-  for ($i = $_POST['qcount']; $i < ($_POST['qcount'] + $_POST['ccount']); $i++) {
-    $v = $verses[$i];
-?>
-  <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
-  Please complete: <br />
-  <b><u><?php echo $v[1]; ?></u></b><br />
-  <b>START</b></p>
+  for ($i = 0; $i < $ccount; $i++) {
 
-  <p class='caller'>Number: __________</p></td>
-  <p class='answer'><?php echo $v[0]; ?><br />
-  <?php echo $v[2]; ?><br />
-  <?php echo $v[0]; ?></p>
-<?php
-    fwrite($scoredata,$v[0]."\n");
+    print <<< TEXT
+      <p class='caller'>
+        $current: <b>ATTENTION</b><br />
+        Please complete: <br />
+        <b><u>{$drilldata[$current][1]}</u></b><br />
+        <b>START</b>
+      </p>
+
+      <p class='caller'>
+        Number: __________
+      </p>
+      <p class='answer'>
+        {$drilldata[$current][2]}<br />
+        {$drilldata[$current][0]}
+      </p>
+
+TEXT;
+
     $current++;
   }
 ?>
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></td>
 
-<p class='caller page'>This is the BOOK DRILL. There will be <?php echo $_POST['bcount']; ?> calls.  I will 
+<p class='caller page'>This is the BOOK DRILL. There will be <?php echo $bcount; ?> calls.  I will 
 name a book of the Bible. On the command &ldquo;Start,&rdquo; you will look for the 
 book and when you find it, place your index finger on the page and step forward. If 
 you are called upon, you will give the name of the book preceding the one called, the 
 book called, and the book following the one called.</p>
 
-<table>
 <?php
-  $books = array_map('str_getcsv', file('books.csv'));
+  for ($i = 0; $i < $bcount; $i++) {
 
-  shuffle($books);
+    print <<< TEXT
+      <p class='caller'>
+        $current: <b>ATTENTION.</b><br />
+        PRESENT BIBLE.<br />
+        <b><u>{$drilldata[$current][0]}</u></b><br />
+        <b>START</b>
+      </p>
 
-  for ($i = 0; $i < $_POST['bcount']; $i++) {
-    $v = $books[$i];
-?>
-  <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
-  Present Bible <br />
-  <b><u><?php echo $v[0]; ?></u></b><br />
-  <b>START</b></p>
+      <p class='caller'>
+        Number: __________
+      </p>
+      <p class='answer'>
+        {$drilldata[$current][1]}<br />
+      </p>
 
-  <p class='caller'><br />Number: __________</p>
-  <p class='answer'><?php echo $v[1]; ?></p>
-<?php
-    fwrite($scoredata,$v[0]."\n");
+TEXT;
+
     $current++;
   }
 ?>
-
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></td>
 
 <p class='caller page'>
 The final drill will be the KEY PASSAGE DRILL. There will be 
-<?php echo $_POST['kcount']; ?> calls. I will announce the reference by stating the 
+<?php echo $kcount; ?> calls. I will announce the reference by stating the 
 subject or title given to the passage and will give the command "Start." A participant 
 must locate the chapter containing the reference, place his finger on any portion of 
 the passage and step forward. When called upon, I will ask the participant to state the 
@@ -147,47 +172,39 @@ Key Passage and reference. After stating the Key Passage and reference, I will a
 same participant to read aloud one or more verses.</p>
 
 <?php
-  $keys = array_map('str_getcsv', file($cycle . '/' . 'keys.csv'));
-  $rawpassages = array_map('str_getcsv', file($cycle . '/' . $trans . '/' . 'passages.csv'));
-  $passages = array();
+  for ($i = 0; $i < $kcount; $i++) {
 
-  foreach ($rawpassages as $p) {
-    $passages[$p[0]] = array($p[1],$p[2]);
-  }
-  shuffle($keys);
+    print <<< TEXT
+      <p class='caller'>
+        $current: <b>ATTENTION</b><br />
+        Recite the key passage and reference: <br />
+        <b><u>{$drilldata[$current][0]}</u></b><br />
+        <b>START</b>
+      </p>
 
-  #print_r ($passages);
+      <p class='caller'>
+        Number: __________
+      </p>
+      <p class='answer'>
+        {$drilldata[$current][0]}<br />
+        {$drilldata[$current][1]}
+      </p>
+      <p class='caller'>
+        Please read {$drilldata[$current][2]}
+      </p>
+      <p class='answer'>
+        {$drilldata[$current][3]}<br />
+        {$drilldata[$current][2]}
+      </p>
 
-  for ($i = 0; $i < $_POST['kcount']; $i++) {
-    $v = $keys[$i];
-    $r = rand(1,$v[3]);
-    $aref = $v[2] . $r;
-    $selectedverse = $passages[$aref];
-?>
-  <p class='caller'><?php echo $current; ?>. <b>ATTENTION</b><br />
-  Present Bible <br />
-  <b><u><?php echo $v[0]; ?></u></b><br />
-  <b>START</b></p>
-  <p class='caller'>Number: __________</p>
-  <p class='caller'>Recite the key passage and reference</p>
-  <p class='answer'><?php echo $v[0]; ?><br />
-  <?php echo $v[1]; ?></p>
+TEXT;
 
-  <p class='caller'>Number: __________ <br />
-  Please read <?php echo $selectedverse[0]; ?></p>
-  <p class='answer'><?php echo $selectedverse[0]; ?><br />
-  <?php echo $selectedverse[1]; ?></p>
-<?php
-    fwrite($scoredata,$v[0]."\n");
     $current++;
   }
+}
 ?>
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></p>
 <p>Thank you for your participation.</p>
-<?php
-  fclose($scoredata);
-}
-?>
 </body>
 </html>

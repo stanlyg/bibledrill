@@ -40,4 +40,9 @@ td.answer {
 h1 { 
   text-align: center;
 }
+@media print {
+  .noprint {
+    display: none;
+  }
+}
 

@@ -5,105 +5,103 @@ require_once('pdfrotate.php');
 class PDF extends PDF_Rotate
 {
   public $drillid;
-	function RotatedText($x,$y,$txt,$angle)
-	{
-		//Text rotated around its origin
-		$this->Rotate($angle,$x,$y);
-		$this->Text($x,$y,$txt);
-		$this->Rotate(0);
-	}
-	function NinetyCenterPoint($x, $y, $w, $h, $txt, $rect=1, $wpad=0)
-	{
-		// Text rotated 90 degrees around centered in a box
-		$tl = $this->GetStringWidth($txt);
-		$newx = $x + $w; 
-		$newy = $y + $h / 2 + $tl / 2;
-		$this->RotatedText($newx,$newy,$txt,90);
+  function RotatedText($x,$y,$txt,$angle)
+  {
+    //Text rotated around its origin
+    $this->Rotate($angle,$x,$y);
+    $this->Text($x,$y,$txt);
+    $this->Rotate(0);
+  }
+  function NinetyCenterPoint($x, $y, $w, $h, $txt, $rect=1, $wpad=0)
+  {
+    // Text rotated 90 degrees around centered in a box
+    $tl = $this->GetStringWidth($txt);
+    $newx = $x + $w; 
+    $newy = $y + $h / 2 + $tl / 2;
+    $this->RotatedText($newx,$newy,$txt,90);
 
-		if ($rect = 1) {
-			$this->Rect($x, $y, $w+$wpad, $h);
-		}
-	}
-	// Load data
-	function LoadData($file)
-	{
-		// Read file lines
-		$lines = file($file);
-		$data = array();
-		foreach($lines as $line)
-			$data[] = explode(';',trim($line));
-		return $data;
-	}
+    if ($rect = 1) {
+      $this->Rect($x, $y, $w+$wpad, $h);
+    }
+  }
+  // Load data
+  function LoadData($file)
+  {
+    // Read file lines
+    $lines = file($file);
+    $data = array();
+    foreach($lines as $line)
+      $data[] = explode(';',trim($line));
+    return $data;
+  }
 
-	// Simple table
-	function DrillTable($counts,$data)
-	{
-		// Top Header
-		$this->Cell(0.35,0.2,"",1,0,"C");
-		$this->Cell(2.95,0.2,"Call",1,0,"C");
-		for ($i = 1; $i <= 12; $i++) {
-			$this->Cell(0.35,0.2,$i,1,0,"C");
-		}
-		$this->Ln();
+  // Simple table
+  function DrillTable($counts,$data)
+  {
+    // Top Header
+    $this->Cell(0.35,0.2,"",0,0,"C");
+    $this->Cell(2.95,0.2,"Call",1,0,"C");
+    for ($i = 1; $i <= 12; $i++) {
+      $this->Cell(0.35,0.2,$i,1,0,"C");
+    }
+    $this->Ln();
 
-		// Left Header
-		$savey = $this->GetY();
-		$y = $this->GetY();
-		$x = $this->GetX();
+    // Left Header
+    $savey = $this->GetY();
+    $y = $this->GetY();
+    $x = $this->GetX();
 
-		$h = 0.25*$counts[0];
-		$this->NinetyCenterPoint($x,$y,0.25,$h,"Quotation Drill",1,0.1);
-		$y = $y + $h;
-		$h = 0.25*$counts[1];
-		$this->NinetyCenterPoint($x,$y,0.25,$h,"Completion Drill",1,0.1);
-		$y = $y + $h;
-		$h = 0.25*$counts[2];
-		$this->NinetyCenterPoint($x,$y,0.25,$h,"Book Drill",1,0.1);
-		$y = $y + $h;
-		$h = 0.25*$counts[3];
-		$this->NinetyCenterPoint($x,$y,0.25,$h,"Key Passage Drill",1,0.1);
-		$y = $y + $h;
+    $h = 0.25*$counts[0];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Quotation Drill",1,0.1);
+    $y = $y + $h;
+    $h = 0.25*$counts[1];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Completion Drill",1,0.1);
+    $y = $y + $h;
+    $h = 0.25*$counts[2];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Book Drill",1,0.1);
+    $y = $y + $h;
+    $h = 0.25*$counts[3];
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Key Passage Drill",1,0.1);
+    $y = $y + $h;
 
-		// Data
-		$this->SetY($savey);
-		foreach($data as $key=>$row)
-		{
-			$this->SetX(0.85);
-			foreach($row as $col){
-				$this->Cell(2.95,0.25,$key.". ".$col,1);
-				for ($i = 1; $i <= 12; $i++) {
-					$this->Cell(0.35,0.25,"",1,0,"C");
-				}
-			}
-			$this->Ln();
-		}
+    // Data
+    $this->SetY($savey);
+    foreach($data as $key=>$row)
+    {
+      $this->SetX(0.85);
+      $this->Cell(2.95,0.25,$key.". ".$row[0],1);
+      for ($i = 1; $i <= 12; $i++) {
+        $this->Cell(0.35,0.25,"",1,0,"C");
+      }
+      $this->Ln();
+    }
 
-		// Footer
-		$max=count($data);
-		$this->Cell(3.3,0.25,"Highest possible Score",1,0,"L");
-		for ($i = 1; $i <= 12; $i++) {
-			$this->Cell(0.35,0.25,$max,1,0,"C");
-		}
-		$this->Ln();
-		$this->Cell(3.3,0.25,"Subtract Number of Errors",1,0,"L");
-		for ($i = 1; $i <= 12; $i++) {
-			$this->Cell(0.35,0.25,"",1,0,"C");
-		}
-		$this->Ln();
-		$this->Cell(3.3,0.25,"Total Score",1,0,"L");
-		for ($i = 1; $i <= 12; $i++) {
-			$this->Cell(0.35,0.25,"",1,0,"C");
-		}
-		$this->Ln();
-	}
+    // Footer
+    $max=count($data);
+    $this->Cell(3.3,0.25,"Highest possible Score",1,0,"L");
+    for ($i = 1; $i <= 12; $i++) {
+      $this->Cell(0.35,0.25,$max,1,0,"C");
+    }
+    $this->Ln();
+    $this->Cell(3.3,0.25,"Subtract Number of Errors",1,0,"L");
+    for ($i = 1; $i <= 12; $i++) {
+      $this->Cell(0.35,0.25,"",1,0,"C");
+    }
+    $this->Ln();
+    $this->Cell(3.3,0.25,"Total Score",1,0,"L");
+    for ($i = 1; $i <= 12; $i++) {
+      $this->Cell(0.35,0.25,"",1,0,"C");
+    }
+    $this->Ln();
+  }
 
-	function Footer()
-	{
-		// Position at 0.3 in from bottom
-		$this->SetY(-0.3);
-		// Page number
-		$this->Cell(0,0.2,$this->drillid,0,0,'C');
-	}
+  function Footer()
+  {
+    // Position at 0.3 in from bottom
+    $this->SetY(-0.3);
+    // Page number
+    $this->Cell(0,0.2,$this->drillid,0,0,'C');
+  }
 
 }
 
