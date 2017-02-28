@@ -24,8 +24,11 @@ if ( !isset($_POST['generate']) ) {
     $drillid = $_POST['drillid'];
   }
   srand($drillid);
-  
-  // Put files in place for scorecard
+  $drillid = $_POST['cycle'][0] . $drillid ;   
+  if ( ($_POST['qcount'] != 6) or ($_POST['ccount'] != 6) or ($_POST['bcount'] != 6) or ($_POST['kcount'] != 6) ) {
+    $drillid .= '-'.$_POST['qcount'].'-'.$_POST['ccount'].'-'.$_POST['bcount'].'-'.$_POST['kcount'];
+  }
+    // Put files in place for scorecard
   $scoredata = fopen("cache/".$drillid,"w");
   fwrite($scoredata,$_POST['qcount'].";".$_POST['ccount'].";".$_POST['bcount'].";".$_POST['kcount']."\n");
 
