@@ -18,8 +18,8 @@ class PDF extends FPDF
   function DrillTable($counts,$data)
   {
     // Top Header
-    $this->Cell(1.5,0.2,"",1,0,"C");
-    $this->Cell(1.8,0.2,"Call",1,0,"C");
+    $this->Cell(1.0,0.2,"",1,0,"C");
+    $this->Cell(2.3,0.2,"Call",1,0,"C");
     for ($i = 1; $i <= 12; $i++) {
       $this->Cell(0.35,0.2,$i,1,0,"C");
     }
@@ -28,18 +28,18 @@ class PDF extends FPDF
     // Left Header
     $y = $this->GetY();
 
-    $this->Cell(1.5,0.25*$counts[0],"Quotation Drill",1,1,"C");
-    $this->Cell(1.5,0.25*$counts[1],"Completion Drill",1,1,"C");
-    $this->Cell(1.5,0.25*$counts[2],"Book Drill",1,1,"C");
-    $this->Cell(1.5,0.25*$counts[3],"Key Passage Drill",1,1,"C");
+    $this->Cell(1.0,0.25*$counts[0],"Quotation",1,1,"C");
+    $this->Cell(1.0,0.25*$counts[1],"Completion",1,1,"C");
+    $this->Cell(1.0,0.25*$counts[2],"Book",1,1,"C");
+    $this->Cell(1.0,0.25*$counts[3],"Key Passage",1,1,"C");
 
     $this->SetY($y);
     // Data
     foreach($data as $key=>$row)
     {
-      $this->SetX(2.0);
+      $this->SetX(1.5);
       foreach($row as $col){
-        $this->Cell(1.8,0.25,$key.". ".$col,1);
+        $this->Cell(2.3,0.25,$key.". ".$col,1);
         for ($i = 1; $i <= 12; $i++) {
           $this->Cell(0.35,0.25,"",1,0,"C");
         }
