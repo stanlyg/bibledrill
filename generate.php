@@ -15,7 +15,7 @@ function generate_data_file ($seed, $cycle, $trans, $qcount, $ccount, $bcount, $
   $scoredata = fopen("cache/".$drillid,"w");
 
   //first line has count values
-  fwrite($scoredata, $qcount.";".$ccount.";".$bcount.";".$kcount."\n");
+  fwrite($scoredata, $qcount."|".$ccount."|".$bcount."|".$kcount."\n");
 
   $current = 1;
 
@@ -26,14 +26,14 @@ function generate_data_file ($seed, $cycle, $trans, $qcount, $ccount, $bcount, $
   for ($i = 0; $i < $qcount; $i++) {
     $v = $verses[$i];
 
-    fwrite($scoredata,$v[0].";".$v[2]."\n");
+    fwrite($scoredata,$v[0]."|".$v[2]."\n");
     $current++;
   }
 
   for ($i = $qcount; $i < ($qcount + $ccount); $i++) {
     $v = $verses[$i];
     
-    fwrite($scoredata,$v[0].";".$v[1].";".$v[2]."\n");
+    fwrite($scoredata,$v[0]."|".$v[1]."|".$v[2]."\n");
     $current++;
   }
   
@@ -45,7 +45,7 @@ function generate_data_file ($seed, $cycle, $trans, $qcount, $ccount, $bcount, $
   for ($i = 0; $i < $bcount; $i++) {
     $v = $books[$i];
     
-    fwrite($scoredata,$v[0].";".$v[1]."\n");
+    fwrite($scoredata,$v[0]."|".$v[1]."\n");
     $current++;
   }
   
@@ -64,7 +64,7 @@ function generate_data_file ($seed, $cycle, $trans, $qcount, $ccount, $bcount, $
     $aref = $v[2] . $r;
     $selectedverse = $passages[$aref];
 
-    fwrite($scoredata,$v[0].";".$v[1].";".$selectedverse[0].";".$selectedverse[1]."\n");
+    fwrite($scoredata,$v[0]."|".$v[1]."|".$selectedverse[0]."|".$selectedverse[1]."\n");
     $current++;
   }
   fclose($scoredata);

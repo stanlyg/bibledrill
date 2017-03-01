@@ -31,7 +31,7 @@ class PDF extends PDF_Rotate
     $lines = file($file);
     $data = array();
     foreach($lines as $line)
-      $data[] = explode(';',trim($line));
+      $data[] = explode('|',trim($line));
     return $data;
   }
 
