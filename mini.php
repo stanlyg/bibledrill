@@ -72,6 +72,7 @@ TEXT;
 
     print <<< TEXT
       <p class='answer'>
+        $current. 
         <b>{$drilldata[$current][0]}</b><br />
         {$drilldata[$current][1]}<br />
       </p>
@@ -84,6 +85,7 @@ TEXT;
 
     print <<< TEXT
       <p class='answer'>
+        $current. 
         <b>{$drilldata[$current][0]}</b><br />
         {$drilldata[$current][1]}<br />
         {$drilldata[$current][2]}<br />
