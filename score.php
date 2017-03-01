@@ -1,6 +1,7 @@
 <?php
 require_once('fpdf.php');
 require_once('pdfrotate.php');
+include("generate.php");
 
 class PDF extends PDF_Rotate
 {
@@ -24,17 +25,6 @@ class PDF extends PDF_Rotate
       $this->Rect($x, $y, $w+$wpad, $h);
     }
   }
-  // Load data
-  function LoadData($file)
-  {
-    // Read file lines
-    $lines = file($file);
-    $data = array();
-    foreach($lines as $line)
-      $data[] = explode('|',trim($line));
-    return $data;
-  }
-
   // Simple table
   function DrillTable($counts,$data)
   {
@@ -53,28 +43,81 @@ class PDF extends PDF_Rotate
 
     $h = 0.25*$counts[0];
     $this->NinetyCenterPoint($x,$y,0.25,$h,"Quotation Drill",1,0.1);
-    $y = $y + $h;
-    $h = 0.25*$counts[1];
-    $this->NinetyCenterPoint($x,$y,0.25,$h,"Completion Drill",1,0.1);
-    $y = $y + $h;
-    $h = 0.25*$counts[2];
-    $this->NinetyCenterPoint($x,$y,0.25,$h,"Book Drill",1,0.1);
-    $y = $y + $h;
-    $h = 0.25*$counts[3];
-    $this->NinetyCenterPoint($x,$y,0.25,$h,"Key Passage Drill",1,0.1);
-    $y = $y + $h;
+    $this->setY($y);
 
-    // Data
-    $this->SetY($savey);
-    foreach($data as $key=>$row)
-    {
+    $q = 1;
+    for ($i = 0; $i < $counts[0]; $i++) {
       $this->SetX(0.85);
-      $this->Cell(2.95,0.25,$key.". ".$row[0],1);
-      for ($i = 1; $i <= 12; $i++) {
+      $this->Cell(2.95,0.25,$q.". ".$data[$q][0],1);
+      for ($j = 1; $j <= 12; $j++) {
         $this->Cell(0.35,0.25,"",1,0,"C");
       }
       $this->Ln();
+      $q++;
     }
+
+    $y = $y + $h;
+    $h = 0.25*$counts[1];
+    if ( ($y + $h) > ($this->GetPageHeight() - 0.75) ) { 
+      $this->AddPage();
+      $y = $this->GetY();
+    }
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Completion Drill",1,0.1);
+    for ($i = 0; $i < $counts[1]; $i++) {
+      $this->SetX(0.85);
+      $this->Cell(2.95,0.25,$q.". ".$data[$q][0],1);
+      for ($j = 1; $j <= 12; $j++) {
+        $this->Cell(0.35,0.25,"",1,0,"C");
+      }
+      $this->Ln();
+      $q++;
+    }
+    $y = $y + $h;
+    $h = 0.25*$counts[2];
+    if ( ($y + $h) > ($this->GetPageHeight() - 0.75) ) { 
+      $this->AddPage();
+      $y = $this->GetY();
+    }
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Book Drill",1,0.1);
+    for ($i = 0; $i < $counts[2]; $i++) {
+      $this->SetX(0.85);
+      $this->Cell(2.95,0.25,$q.". ".$data[$q][0],1);
+      for ($j = 1; $j <= 12; $j++) {
+        $this->Cell(0.35,0.25,"",1,0,"C");
+      }
+      $this->Ln();
+      $q++;
+    }
+
+    $y = $y + $h;
+    $h = 0.25*$counts[3];
+    if ( ($y + $h) > ($this->GetPageHeight() - 0.75) ) { 
+      $this->AddPage();
+      $y = $this->GetY();
+    }
+    $this->NinetyCenterPoint($x,$y,0.25,$h,"Key Passage Drill",1,0.1);
+    $y = $y + $h;
+    for ($i = 0; $i < $counts[3]; $i++) {
+      $this->SetX(0.85);
+      $this->Cell(2.95,0.25,$q.". ".$data[$q][0],1);
+      for ($j = 1; $j <= 12; $j++) {
+        $this->Cell(0.35,0.25,"",1,0,"C");
+      }
+      $this->Ln();
+      $q++;
+    }
+#
+#    // Data
+#    $this->SetY($savey);
+#    foreach($data as $key=>$row)
+#    {
+#      $this->SetX(0.85);
+#      $this->Cell(2.95,0.25,$key.". ".$row[0],1);
+#      for ($i = 1; $i <= 12; $i++) {
+#        $this->Cell(0.35,0.25,"",1,0,"C");
+#      }
+#      $this->Ln();
+#    }
 
     // Footer
     $max=count($data);
@@ -111,7 +154,11 @@ $header = array('Country', 'Capital', 'Area (sq km)', 'Pop. (thousands)');
 // Data loading
 $drillid = $_GET['drillid'];
 $pdf->drillid = $drillid;
-$data = $pdf->LoadData('cache/'.$drillid);
+if ( file_exists('cache/'.$drillid) ) {
+  $data = LoadData('cache/'.$drillid);
+} else {
+  $data = [];
+}
 $counts = $data[0];
 unset($data[0]);
 

@@ -1,6 +1,17 @@
 <?php
 // This file should not produce any output to stdout.
 
+  // Load data
+  function LoadData($file)
+  {
+    // Read file lines
+    $lines = file($file);
+    $data = array();
+    foreach($lines as $line)
+      $data[] = explode('|',trim($line));
+    return $data;
+  }
+
 
 function generate_data_file ($seed, $cycle, $trans, $qcount, $ccount, $bcount, $kcount) {
 
