@@ -12,16 +12,41 @@
     return $data;
   }
 
+function generate_from_id ($drillid) { 
+  $splits = explode('-', $drillid);
+  $cycle = $splits[0][0];
+  if ( $cycle == "r" ) { $cycle = "red"; }
+  if ( $cycle == "g" ) { $cycle = "green"; }
+  if ( $cycle == "b" ) { $cycle = "blue"; }
 
-function generate_data_file ($seed, $cycle, $trans, $qcount, $ccount, $bcount, $kcount) {
+  $trans = $splits[0][1];
+  if ( $trans == "k" ) { $trans = "kjv"; }
+  if ( $trans == "n" ) { $trans = "niv"; }
+  if ( $trans == "h" ) { $trans = "hcs"; }
+  if ( $trans == "e" ) { $trans = "esv"; }
 
+  $seed = substr($splits[0],2);
 
+  if ( count($splits) == 5) {
+    return generate_data_file ($seed, $cycle, $trans, $splits[1], $splits[2], $splits[3], $splits[4]);
+  } else {
+    return generate_data_file ($seed, $cycle, $trans);
+  }
+
+}
+
+function generate_data_file ($seed, $cycle, $trans, $qcount=6, $ccount=6, $bcount=6, $kcount=6) {
+
+  $seed = intval($seed); 
+  
   srand($seed);
+  
   $drillid = $cycle[0] . $trans[0] . $seed;
 
   if ( ($qcount != 6) or ($ccount != 6) or ($bcount != 6) or ($kcount != 6) ) {
     $drillid .= '-'.$qcount.'-'.$ccount.'-'.$bcount.'-'.$kcount;
   }
+
   // Use $drillid as filename, and put in cache folder. 
   $scoredata = fopen("cache/".$drillid,"w");
 
