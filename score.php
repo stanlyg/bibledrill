@@ -157,7 +157,8 @@ $pdf->drillid = $drillid;
 if ( file_exists('cache/'.$drillid) ) {
   $data = LoadData('cache/'.$drillid);
 } else {
-  $data = [];
+  $drillid = generate_from_id($drillid);
+  $data = LoadData('cache/'.$drillid);
 }
 $counts = $data[0];
 unset($data[0]);

@@ -21,7 +21,12 @@ if ( !isset($_GET['drillid']) ) {
 } else {
 
   $drillid = $_GET['drillid'];
-  $drilldata = LoadData('cache/'.$drillid);
+  if (file_exists('cache/'.$drillid)) {
+    $drilldata = LoadData('cache/'.$drillid);
+  } else {
+    $drillid = generate_from_id($drillid); 
+    $drilldata = LoadData('cache/'.$drillid);
+  }
 
   $qcount = $drilldata[0][0];
   $ccount = $drilldata[0][1];
