@@ -43,8 +43,9 @@ This Children's Bible Drill is for the <?php echo strtoupper($cycle); ?> cycle a
 <?php echo strtoupper($trans); ?> translation. This drill has an ID number of <?php echo $drillid; ?>. 
 </p>
 <p class='noprint'>
-<a href='score.php?drillid=<?php echo $drillid ?>'>Score card</a><br />
-<a href='mini.php?drillid=<?php echo $drillid ?>'>Just the Q & A</a>
+<a href='score.php?drillid=<?php echo $drillid ?>'>Score card</a> | 
+<a href='mini.php?drillid=<?php echo $drillid ?>'>Just the Q & A</a> |
+<a href='minipdf.php?drillid=<?php echo $drillid ?>'>Drill Call Guide</a>
 </p>
 
 <p class="caller">
