@@ -106,19 +106,6 @@ class PDF extends PDF_Rotate
       $this->Ln();
       $q++;
     }
-#
-#    // Data
-#    $this->SetY($savey);
-#    foreach($data as $key=>$row)
-#    {
-#      $this->SetX(0.85);
-#      $this->Cell(2.95,0.25,$key.". ".$row[0],1);
-#      for ($i = 1; $i <= 12; $i++) {
-#        $this->Cell(0.35,0.25,"",1,0,"C");
-#      }
-#      $this->Ln();
-#    }
-
     // Footer
     $max=count($data);
     $this->Cell(3.3,0.25,"Highest possible Score",1,0,"L");
@@ -149,8 +136,6 @@ class PDF extends PDF_Rotate
 }
 
 $pdf = new PDF("P","in","Letter");
-// Column headings
-$header = array('Country', 'Capital', 'Area (sq km)', 'Pop. (thousands)');
 // Data loading
 $drillid = $_GET['drillid'];
 $pdf->drillid = $drillid;
