@@ -167,6 +167,7 @@ same participant to read aloud one or more verses.</p>
     print <<< TEXT
       <p class='caller'>
         $current: <b>ATTENTION</b><br />
+        PRESENT BIBLE.<br />
         Recite the key passage and reference: <br />
         <b><u>{$drilldata[$current][0]}</u></b><br />
         <b>START</b>
@@ -196,5 +197,10 @@ TEXT;
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></p>
 <p>Thank you for your participation.</p>
+<p>
+<?php
+  include("copyrights/".$trans.".txt");
+?>
+</p>
 </body>
 </html>
