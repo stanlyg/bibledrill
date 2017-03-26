@@ -49,14 +49,25 @@ This Children's Bible Drill is for the <?php echo strtoupper($cycle); ?> cycle a
 </p>
 
 <p class="caller">
-We have four different types of Drills: QUOTATION DRILL, COMPLETION DRILL
-BOOK DRILL and KEY PASSAGE DRILL.</p>
+Welcome to Children's Bible Drill for &mdash;. <br /> 
+There are five people who will be involved in running the drill today. I am the caller. There is also a 
+timekeeper, who will track the time. There are three judges who will track their scores independently, 
+and then they will combine their scores to determine the qualifications.</p>
+
+<p class="caller">
+We have four different types of Drills: QUOTATION DRILL, COMPLETION DRILL, BOOK DRILL 
+and KEY PASSAGE DRILL.</p>
+
+<p class="caller">For each drill, the participant will have ten seconds to step forward, and if called upon, 
+to provide the correct answer to the caller's prompt.</p>
 
 <p class="caller">
 Our first drill is the QUOTATION DRILL and there will be <?php echo $_POST['qcount']; ?> 
-calls.  I will give the reference. If the participant knows the verse, he steps forward 
-on the command &ldquo;START.&rdquo; When called upon, the participant must quote the 
-verse and give the reference.
+calls.  I will give the reference, such as Proverbs 31, verses 10 and 11. If the participant knows the 
+verse, he or she should step forward after the command &ldquo;START&rdquo; is given, but before the 
+timekeeper calls &ldquo;TIME.&rdquo; When called upon, the participant must quote the complete verse 
+and give the reference. Any participant who is not called upon should wait patiently until the command 
+&ldquo;ATTENTION&rdquo; is given.
 </p>
 
 <?php
@@ -89,9 +100,12 @@ TEXT;
 <b>PLEASE RELAX.</b></p>
 
 <p class='caller page'>Our second drill is the COMPLETION DRILL. There will be a total of 
-<?php echo $ccount; ?> calls. I will quote the first part of the Scripture. If 
-the participant can complete the verse, he steps forward on the command 
-&ldquo;Start&rdquo;, prepared to quote the entire verse and give the reference.<p>
+<?php echo $ccount; ?> calls. I will quote the first part of the Scripture, such as 
+&ldquo;A wife of noble character&rdquo;. If the participant can complete the verse, he or she 
+should step forward after the command &ldquo;START&rdquo; is given, but before the timekeeper
+class &ldquo;TIME.&rdquo; When called upon, the participant must quote the complete verse and 
+give the reference. Any participant who is not called upon should wait patiently until the command
+&ldquo;ATTENTION&rdquo; is given.</p>
 
 <?php
   for ($i = 0; $i < $ccount; $i++) {
@@ -120,11 +134,13 @@ TEXT;
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></td>
 
-<p class='caller page'>This is the BOOK DRILL. There will be <?php echo $bcount; ?> calls.  I will 
-name a book of the Bible. On the command &ldquo;Start,&rdquo; you will look for the 
-book and when you find it, place your index finger on the page and step forward. If 
-you are called upon, you will give the name of the book preceding the one called, the 
-book called, and the book following the one called.</p>
+<p class='caller page'>Our third drill is the BOOK DRILL. There will be a total of 
+<?php echo $bcount; ?> calls.  I will name a book of the Bible. After the command &ldquo;START,&rdquo; 
+each participant should look for the book in the Bible, and after you finding it, place his or her index 
+finger on a page within that book of the Bible and step forward. The participant must step forward before
+the timekeeper calls &ldquo;TIME.&rdquo; When called upon, the participant must 
+give the name of the book preceding the one called, the book called, and the book following the one 
+called.</p>
 
 <?php
   for ($i = 0; $i < $bcount; $i++) {
@@ -153,13 +169,15 @@ TEXT;
 <b>PLEASE RELAX.</b></td>
 
 <p class='caller page'>
-The final drill will be the KEY PASSAGE DRILL. There will be 
-<?php echo $kcount; ?> calls. I will announce the reference by stating the 
-subject or title given to the passage and will give the command "Start." A participant 
-must locate the chapter containing the reference, place his finger on any portion of 
-the passage and step forward. When called upon, I will ask the participant to state the 
-Key Passage and reference. After stating the Key Passage and reference, I will ask the 
-same participant to read aloud one or more verses.</p>
+Our fourth and final drill will be the KEY PASSAGE DRILL. There will be a total of 
+<?php echo $kcount; ?> calls. I will announce the reference by stating the subject or title given 
+to the passage, such as &ldquo;The Wise Wife&rdquo;. After the command &ldquo;START,&rdquo; each 
+participant should look for the key passage in the Bible, and after finding it, place his or her 
+index finger on a portion of the text within the key passage and step forward. The participant 
+must step forward before the timekeeper calls &ldquo;TIME.&rdquo; When called upon, the 
+participant must give both the title of the Key Passage and the reference. After corrrectly 
+stating the Key Passage and reference, I will ask the same participant to read aloud one or more 
+verses from within that key passage.</p>
 
 <?php
   for ($i = 0; $i < $kcount; $i++) {
@@ -196,8 +214,9 @@ TEXT;
 ?>
 <p class='caller'><b>ATTENTION</b><br />
 <b>PLEASE RELAX.</b></p>
-<p>Thank you for your participation.</p>
-<p>
+<p>Drillers, thank you for your participation. The judges will now confer to determine the 
+final scores for each drill participant.</p>
+<p class='copyrightnotice'>
 <?php
   include("copyrights/".$trans.".txt");
 ?>
