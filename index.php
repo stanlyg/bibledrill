@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<?
+<?php
 $year = (int) date("Y") + 0 ;
 $month = (int) date("n") + 0; 
 if ($month > 4) { $year++; }
