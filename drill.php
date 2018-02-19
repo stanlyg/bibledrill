@@ -18,8 +18,10 @@ if ( !isset($_POST['generate']) ) {
 <?php
 } else {
 
-  if ( !isset($_POST['drillid']) ) {
-    $seed = time();
+  if ( !isset($_POST['drillid']) || intval($_POST['drillid']) == 0 ) {
+	//$seed = time();
+	// generates a seed like 1765 for Mar 5 2017 or 18301 for Oct 27 2018 
+	$seed = intval(date("yz")); 
   } else {
     $seed = $_POST['drillid'];
   }
