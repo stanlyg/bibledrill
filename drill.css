@@ -3,6 +3,8 @@ body {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+	font-family:sans-serif;
+	font-size:16px;
 }
 .caller {
   color: blue;
@@ -51,3 +53,60 @@ h1 {
   }
 }
 
+#cbdform {
+	text-align: center;
+}
+
+.radio-toolbar {
+  margin: 10px;
+}
+
+.radio-toolbar input[type="radio"] {
+    display:none; 
+}
+
+.radio-toolbar label {
+    display:inline-block;
+    background-color:#ddd;
+    padding: 10px 20px;
+    border: 2px solid #444;
+    border-radius: 4px;    
+}
+
+.radio-toolbar label:hover {
+  background-color: #dfd;
+}
+
+.radio-toolbar input[type="radio"]:checked + label { 
+    background-color:#bfb;
+    border-color: #4c4;
+}
+
+.options {
+	margin: 10px;
+}
+
+.options input[type="checkbox"] {
+	display: none;
+	visibility: hidden;
+}
+
+#extradetails {
+	height: 0px;
+	overflow: hidden;
+	margin: 10px;
+}
+
+#toggleoptions:checked ~ #extradetails {
+	height: auto;
+}
+label[for=toggleoptions]::before {
+  content: "\2295";
+}
+#toggleoptions:checked ~ label[for=toggleoptions]::before {
+  content: "\2296";
+}
+
+.numberstuff {
+	margin: 10px;
+}	
